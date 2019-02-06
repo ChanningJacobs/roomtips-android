@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    -->
+    <color name="rt_color_primary">#447AA6</color>
+    <color name="rt_color_secondary">#277AA0</color>
+    <color name="rt_color_accent">#A61D58</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="rt_color_purple">#692797</color>
+
+    <color name="control_background">#cc4285f4</color>
+
+
+</resources>
