@@ -72,6 +72,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 // Minor modifications made to Strings and TextureView output.
+// Images saved to local storage as test.jpg
 public class Camera2BasicFragment extends Fragment
         implements View.OnClickListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -413,6 +414,7 @@ public class Camera2BasicFragment extends Fragment
             Log.e(TAG, "Couldn't find any suitable preview size");
             return choices[0];
         }
+
     }
 
     public static Camera2BasicFragment newInstance() {
@@ -435,7 +437,7 @@ public class Camera2BasicFragment extends Fragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mFile = new File(getActivity().getExternalFilesDir(null), "pic.jpg");
+        mFile = new File(getActivity().getFilesDir(), "test.jpg");
     }
 
     @Override
@@ -510,9 +512,15 @@ public class Camera2BasicFragment extends Fragment
                 }
 
                 // For still image captures, we use the largest available size.
+                // Using hard coded value instead of largest available
+                // Instead of 5344x4008 (4:3) we are using 5344x3006 (16:9) to fill the full screen
+                Size largest = Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)).get(1);
+                Log.i(TAG, "imageDimension selected " + Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)).get(1));
+                /*
                 Size largest = Collections.max(
                         Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)),
                         new CompareSizesByArea());
+                */
                 mImageReader = ImageReader.newInstance(largest.getWidth(), largest.getHeight(),
                         ImageFormat.JPEG, /*maxImages*/2);
                 mImageReader.setOnImageAvailableListener(
@@ -566,9 +574,15 @@ public class Camera2BasicFragment extends Fragment
                 // Danger, W.R.! Attempting to use too large a preview size could  exceed the camera
                 // bus' bandwidth limitation, resulting in gorgeous previews but the storage of
                 // garbage capture data.
+
+                for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
+                    Log.i(TAG, "imageDimension " + size);
+                }
+
                 mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class),
                         rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth,
                         maxPreviewHeight, largest);
+
 
                 // We fit the aspect ratio of TextureView to the size of preview we picked.
                 int orientation = getResources().getConfiguration().orientation;
@@ -839,6 +853,8 @@ public class Camera2BasicFragment extends Fragment
                     showToast("Saved: " + mFile);
                     Log.d(TAG, mFile.toString());
                     unlockFocus();
+                    FurnitureImageClassifier FurnImgClas = new FurnitureImageClassifier();
+                    FurnImgClas.execute(mFile);
                 }
             };
 

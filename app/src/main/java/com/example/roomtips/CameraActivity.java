@@ -18,6 +18,8 @@ package com.example.roomtips;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.Window;
 
 public class CameraActivity extends AppCompatActivity {
 
@@ -30,6 +32,24 @@ public class CameraActivity extends AppCompatActivity {
                     .replace(R.id.container, Camera2BasicFragment.newInstance())
                     .commit();
         }
+
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        View mCameraView = findViewById(R.id.texture);
+
+        mCameraView.setSystemUiVisibility(
+                          View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
+        View mControlsView = findViewById(R.id.control);
+        //mControlsView.setVisibility(View.GONE);
+    }
 }
