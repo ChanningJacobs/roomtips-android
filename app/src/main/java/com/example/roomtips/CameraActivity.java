@@ -51,5 +51,7 @@ public class CameraActivity extends AppCompatActivity {
 
         View mControlsView = findViewById(R.id.control);
         //mControlsView.setVisibility(View.GONE);
+        View mInfoView = findViewById(R.id.info);
+        mInfoView.setVisibility(View.GONE);
     }
 }
