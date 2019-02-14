@@ -80,16 +80,13 @@ public class FurnitureImageClassifier extends AsyncTask<File, Void, ArrayList<St
                 Log.d("FOUND", "carpet");
             }
 
-
-            FurnitureFragment.products = NativeAPIKt.getSuggestionsIkea(query_product, 10, 0, 9999,true,2);
-
+            new IkeaAPIAccessTask().execute(query_product);
         }
 
 
 
 
         //returnClassifications(results);
-        return;
     }
 
     private ArrayList<String> returnClassifications(ArrayList<String> results){
