@@ -62,6 +62,6 @@ public class WatsonTask extends AsyncTask<String, Void, MessageResponse> {
         }
         Log.d(TAG, "Text to be read: " + text);
         Log.d(TAG, "Action to take: " + action);
-        new SpeechToTextTask(services, activity.get()).execute(text, action);
+        new TextToSpeechTask(services, activity.get()).execute(text, action);
     }
 }

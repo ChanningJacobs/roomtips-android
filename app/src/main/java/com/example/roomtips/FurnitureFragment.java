@@ -25,6 +25,7 @@ public class FurnitureFragment extends Fragment {
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
+    public static MyFurnitureRecyclerViewAdapter adapter = new MyFurnitureRecyclerViewAdapter(products);
     private int mColumnCount = 1;
     //private OnListFragmentInteractionListener mListener;
 
@@ -68,7 +69,7 @@ public class FurnitureFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyFurnitureRecyclerViewAdapter(products));//, mListener));
+            recyclerView.setAdapter(adapter);//, mListener)
         }
         return view;
     }

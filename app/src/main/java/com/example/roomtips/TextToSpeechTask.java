@@ -11,12 +11,12 @@ import com.ibm.watson.developer_cloud.text_to_speech.v1.model.SynthesizeOptions;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 
-public class SpeechToTextTask extends AsyncTask<String, Void, String> {
+public class TextToSpeechTask extends AsyncTask<String, Void, String> {
     private final String TAG = "TextToSpeechTask";
     private CustomServiceObject services;
     private WeakReference<Activity> activity;
 
-    SpeechToTextTask(CustomServiceObject s, Activity a) {
+    TextToSpeechTask(CustomServiceObject s, Activity a) {
         services = s;
         activity = new WeakReference<>(a);
     }

@@ -10,7 +10,7 @@ public class IkeaAPIAccessTask extends AsyncTask<String, Void, ArrayList<Product
 
     @Override
     protected ArrayList<Product> doInBackground(String... params) {
-        FurnitureFragment.products = NativeAPIKt.getSuggestionsIkea(params[0], 10, 0, 9999, true, 2);
+        FurnitureFragment.products = NativeAPIKt.getSuggestionsIkea(params[0], 10, 0, 9999, false, 4);
         return FurnitureFragment.products;
     }
 
@@ -19,5 +19,13 @@ public class IkeaAPIAccessTask extends AsyncTask<String, Void, ArrayList<Product
         for (Product product : products) {
             Log.d(TAG, "Found: " + product.getName());
         }
+        Log.d("OUR PRODUCTS", "HELLO TEST FIRST");
+        FurnitureFragment.products = products;
+        Log.d("OUR PRODUCTS", "HELLO TEST");
+        Log.d("OUR PRODUCTS", "" + FurnitureFragment.products);
+        Log.d("OUR PRODUCTS", "HELLO TEST THIRD");
+        FurnitureFragment.adapter.mValues = FurnitureFragment.products;
+        FurnitureFragment.adapter.notifyDataSetChanged();
+        Log.d("OUR PRODUCTS", "HELLO TEST LAST");
     }
 }

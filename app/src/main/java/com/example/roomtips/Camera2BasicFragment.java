@@ -54,6 +54,7 @@ import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
@@ -425,7 +426,20 @@ public class Camera2BasicFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_camera2_basic, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_camera2_basic, container, false);
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch(motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        takePicture();
+                        break;
+                }
+                return true;
+            }
+        });
+        return view;
     }
 
     @Override
@@ -446,7 +460,7 @@ public class Camera2BasicFragment extends Fragment
 
         }
         View prod_list = getView().findViewById(R.id.options);
-        prod_list.setVisibility(View.INVISIBLE);
+        prod_list.setVisibility(View.VISIBLE);
 
     }
 
@@ -918,8 +932,10 @@ public class Camera2BasicFragment extends Fragment
         }
     }
 
+
     @Override
     public void onClick(View view) {
+        /*
         switch (view.getId()) {
             case R.id.picture: {
                 takePicture();
@@ -935,7 +951,7 @@ public class Camera2BasicFragment extends Fragment
                 }
                 break;
             }
-        }
+        }*/
     }
 
     private void setAutoFlash(CaptureRequest.Builder requestBuilder) {

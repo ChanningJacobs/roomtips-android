@@ -1,5 +1,6 @@
 package com.example.roomtips;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 //import com.example.roomtips.FurnitureFragment.OnListFragmentInteractionListener;
+
+import com.bumptech.glide.Glide;
 
 import org.w3c.dom.Text;
 
@@ -22,7 +25,9 @@ import java.util.List;
  */
 public class MyFurnitureRecyclerViewAdapter extends RecyclerView.Adapter<MyFurnitureRecyclerViewAdapter.ViewHolder> {
 
-    private final ArrayList<Product> mValues;
+    Context parentContext = null;
+
+    public static ArrayList<Product> mValues;
     //private final OnListFragmentInteractionListener mListener;
 
     public MyFurnitureRecyclerViewAdapter(ArrayList<Product> products){//,OnListFragmentInteractionListener listener) {
@@ -32,6 +37,7 @@ public class MyFurnitureRecyclerViewAdapter extends RecyclerView.Adapter<MyFurni
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        parentContext = parent.getContext();
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_furniture, parent, false);
         return new ViewHolder(view);
@@ -41,7 +47,7 @@ public class MyFurnitureRecyclerViewAdapter extends RecyclerView.Adapter<MyFurni
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
         holder.mItem = mValues.get(position);
-        //holder.mImageView.setImage();
+        Glide.with(parentContext).load(mValues.get(position).getImgUrl()).into(holder.mImageView);
         holder.mNameView.setText(mValues.get(position).getName());
         holder.mDescriptionView.setText(mValues.get(position).getDescription());
         holder.mPriceView.setText(mValues.get(position).getPrice() + "");

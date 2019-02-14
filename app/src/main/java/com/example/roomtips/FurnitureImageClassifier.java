@@ -1,6 +1,7 @@
 package com.example.roomtips;
 
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.ibm.watson.developer_cloud.service.exception.ServiceResponseException;
@@ -12,6 +13,7 @@ import com.ibm.watson.developer_cloud.visual_recognition.v3.model.ClassifyOption
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,6 +21,13 @@ import java.util.Collections;
 // Given a list of image files, classify separately and return each classification string in a list
 public class FurnitureImageClassifier extends AsyncTask<File, Void, ArrayList<String>> {
 
+    /*
+    WeakReference<Fragment> fragment;
+
+    FurnitureImageClassifier(Fragment currentFragment) {
+        fragment = new WeakReference<>(currentFragment);
+    }
+    */
     @Override
     protected ArrayList<String> doInBackground(File... testImage) {
 
@@ -60,28 +69,30 @@ public class FurnitureImageClassifier extends AsyncTask<File, Void, ArrayList<St
         for (String classification : results) {
             Log.d("classification", classification);
             String query_product = "";
+            String tag = "ClassifierFound";
             if (classification.contains("chair")) {
                 query_product = "chair";
-                Log.d("FOUND", "chair");
+                Log.d(tag, "chair");
             } else if (classification.contains("bed")) {
                 query_product = "bed";
-                Log.d("FOUND", "bed");
+                Log.d(tag, "bed");
             } else if (classification.contains("desk")) {
                 query_product = "desk";
-                Log.d("FOUND", "desk");
+                Log.d(tag, "desk");
             } else if (classification.contains("table")) {
                 query_product = "table";
-                Log.d("FOUND", "table");
+                Log.d(tag, "table");
             } else if (classification.contains("lamp")) {
                 query_product = "lamp";
-                Log.d("FOUND", "lamp");
+                Log.d(tag, "lamp");
             } else if (classification.contains("carpet")) {
                 query_product = "carpet";
-                Log.d("FOUND", "carpet");
+                Log.d(tag, "carpet");
             }
 
             new IkeaAPIAccessTask().execute(query_product);
         }
+
 
 
 
