@@ -1,0 +1,44 @@
+Some Notes about my additions/changes:
+
+Packages:
+
+I've added two new dependencies, which I've included in the gradle files. The dependencies are
+Anko - introduces quality of life improvements for kotlin, and
+Glide - makes displaying images from the web extremely easy
+
+Below are some examples of how to use them/comments about how to integrate my code into the existing code
+
+Examples:
+
+1. In order to call any kotlin code from a java file, you will need to use the following:
+   Suppose we have the following files:
+       CameraActivity.java
+       NativeAPI.kt (which contains some function, say test()
+   In order to call a function from NativeAPI.kt in CameraActivity.java, you should use the following calling convention
+       NativeAPIKt.test()
+       ***notice the added Kt at the end of the file name, also java will expect you to capitalize the first letter if it isn't (nativeAPI.kt -> NativeAPIKt)
+
+2. To make use of the webAPI calls in NativeAPI with the getSuggestionsIkea function, you will need to place it in an async block as usual, but Anko makes the code
+   for that a lot nicer. You can use the following code block as a general guideline:
+   
+       doAsync {
+           // call your network-using methods here
+	   // e.g. results = NativeAPIKt.getSuggestionsIkea("table")
+	   uiThread {
+	       // in here you can do stuff with the results, like populate a cardView
+	   }
+       }
+
+3. The Glide API is super helpful for displaying images, the products each come with a Product.imgUrl which is a url to its thumbnail image which we need to display
+   Glide makes displaying images from the web really easy, below is an example of how to do that
+
+       GlideApp.with(this).load("http://goo.gl/gEgYUd").into(imageView);
+       ***assuming imageView is an imageView we have instantiated
+       ***you should be able to just pass in Product.imgUrl into the load() call
+       ***these will of course also need to be in async blocks like above
+
+   You will also have to import the Glide stuff in the file that you add the product loading code into, it should pop up when you type it in to add the imports
+   
+
+Please be sure to look at the changes in both the app level and project level gradle files to include the changes (which are in this branch as well)
+I didn't want to merge into master because I assumed you had some unpushed code, but the merge should be relatively painless
