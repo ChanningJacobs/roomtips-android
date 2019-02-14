@@ -5,10 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import com.ibm.watson.developer_cloud.android.library.audio.MicrophoneHelper;
-import com.ibm.watson.developer_cloud.android.library.audio.StreamPlayer;
 import com.ibm.watson.developer_cloud.assistant.v2.Assistant;
-import com.ibm.watson.developer_cloud.assistant.v2.model.SessionResponse;
 import com.ibm.watson.developer_cloud.service.security.IamOptions;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.SpeechToText;
 import com.ibm.watson.developer_cloud.text_to_speech.v1.TextToSpeech;
@@ -21,20 +18,17 @@ public class Main extends AppCompatActivity {
     protected Assistant watsonAssistant;
     protected SpeechToText speechToText;
     protected TextToSpeech textToSpeech;
-    protected SessionResponse watsonSession;
-    protected StreamPlayer streamPlayer;
-    protected boolean recording = false;
-    protected MicrophoneHelper microphoneHelper;
+    protected CustomServiceObject services;
+    protected RecordAudio recordAudio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "Entered onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        streamPlayer = new StreamPlayer();
-        microphoneHelper = new MicrophoneHelper(this);
         createServices();
+        services = new CustomServiceObject(watsonAssistant,textToSpeech, speechToText);
+        recordAudio = new RecordAudio(this);
     }
     /*
         Detect touch events on the main activity and update accordingly.
@@ -55,7 +49,7 @@ public class Main extends AppCompatActivity {
             case (MotionEvent.ACTION_UP):
                 Log.d(DEBUG_TAG_1, "Action was UP");
                 //startActivity(new Intent(this, CameraActivity.class));
-                RecordAudio.record(this);
+                recordAudio.record(services);
                 return true;
             case (MotionEvent.ACTION_CANCEL):
                 Log.d(DEBUG_TAG_1, "Action was CANCEL");

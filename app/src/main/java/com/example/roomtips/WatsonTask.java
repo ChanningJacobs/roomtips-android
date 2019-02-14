@@ -1,5 +1,6 @@
 package com.example.roomtips;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -12,36 +13,34 @@ import java.lang.ref.WeakReference;
 
 public class WatsonTask extends AsyncTask<String, Void, MessageResponse> {
     private final String TAG = "SessionTestTask";
-    private WeakReference<Main> mainReference;
+    private CustomServiceObject services;
+    private WeakReference<Activity> activity;
 
-    WatsonTask(Main context) {
-        mainReference = new WeakReference<>(context);
+    WatsonTask(CustomServiceObject s, Activity a) {
+        services = s;
+        activity = new WeakReference<>(a);
     }
 
     @Override
     protected MessageResponse doInBackground(String... params) {
             /*
-                Create a new Watson Assistant session if no session is active. Session is used to
-                send and receive messages, keeps track of current conversation flow.
-             */
-        Main main = mainReference.get();
-        if (main.watsonSession == null) {
-            CreateSessionOptions watsonSessionOptions = new CreateSessionOptions.Builder(main.getString(R.string.assistant_id)).build();
-            main.watsonSession = main.watsonAssistant.createSession(watsonSessionOptions).execute();
-            Log.d(TAG, main.watsonSession.toString());
-        }
-
-            /*
                 Take text from parameters and send into service as a message
              */
         String textToSend = params[0];
         Log.d(TAG, "Sending text: " + textToSend);
+
+        if (services.getWatsonSession() == null) {
+            CreateSessionOptions watsonSessionOptions = new CreateSessionOptions.Builder(activity.get().getString(R.string.assistant_id)).build();
+            services.setWatsonSession(services.getWatsonAssistant().createSession(watsonSessionOptions).execute());
+            Log.d(TAG, "Session: " + services.getWatsonSession());
+        }
+
         MessageInput input = new MessageInput.Builder().messageType("text").text(textToSend).build();
-        MessageOptions messageOptions = new MessageOptions.Builder(main.getString(R.string.assistant_id), main.watsonSession.getSessionId()).input(input).build();
+        MessageOptions messageOptions = new MessageOptions.Builder(activity.get().getString(R.string.assistant_id), services.getWatsonSession().getSessionId()).input(input).build();
             /*
                 Get response from service
              */
-        MessageResponse response = main.watsonAssistant.message(messageOptions).execute();
+        MessageResponse response = services.getWatsonAssistant().message(messageOptions).execute();
         Log.d(TAG, response.toString());
 
         return response;
@@ -63,6 +62,6 @@ public class WatsonTask extends AsyncTask<String, Void, MessageResponse> {
         }
         Log.d(TAG, "Text to be read: " + text);
         Log.d(TAG, "Action to take: " + action);
-        new SpeechToTextTask(mainReference.get()).execute(text, action);
+        new SpeechToTextTask(services, activity.get()).execute(text, action);
     }
 }

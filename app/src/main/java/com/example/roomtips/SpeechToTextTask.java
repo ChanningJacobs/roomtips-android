@@ -1,8 +1,11 @@
 package com.example.roomtips;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.ibm.watson.developer_cloud.android.library.audio.StreamPlayer;
 import com.ibm.watson.developer_cloud.text_to_speech.v1.model.SynthesizeOptions;
 
 import java.io.InputStream;
@@ -10,20 +13,22 @@ import java.lang.ref.WeakReference;
 
 public class SpeechToTextTask extends AsyncTask<String, Void, String> {
     private final String TAG = "TextToSpeechTask";
-    private WeakReference<Main> mainReference;
+    private CustomServiceObject services;
+    private WeakReference<Activity> activity;
 
-    SpeechToTextTask(Main context) {
-        mainReference = new WeakReference<>(context);
+    SpeechToTextTask(CustomServiceObject s, Activity a) {
+        services = s;
+        activity = new WeakReference<>(a);
     }
     @Override
     protected String doInBackground(String... params) {
-        Main main = mainReference.get();
         String textToRead = params[0];
         Log.d(TAG, textToRead);
+        StreamPlayer streamPlayer = new StreamPlayer();
         try {
             SynthesizeOptions synthesizeOptions = new SynthesizeOptions.Builder().text(textToRead).accept(SynthesizeOptions.Accept.AUDIO_WAV).voice(SynthesizeOptions.Voice.EN_US_ALLISONVOICE).build();
-            InputStream inputStream = main.textToSpeech.synthesize(synthesizeOptions).execute();
-            main.streamPlayer.playStream(inputStream);
+            InputStream inputStream = services.getTextToSpeech().synthesize(synthesizeOptions).execute();
+            streamPlayer.playStream(inputStream);
             inputStream.close();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
@@ -38,9 +43,13 @@ public class SpeechToTextTask extends AsyncTask<String, Void, String> {
 
     private void runAction(String action) {
         if (action.equals("turnOnCamera")) {
-            mainReference.get().startActivity(new Intent(mainReference.get(), CameraActivity.class));
+            Log.d(TAG, "Turning on camera");
+            Intent cameraIntent = new Intent(activity.get(), CameraActivity.class);
+            cameraIntent.putExtra("services", new ServiceParcelable(services));
+            activity.get().startActivity(new Intent(activity.get(), CameraActivity.class));
         } else if (action.equals("analyzeImage")) {
-            // Analyze image
+
+            Log.d(TAG, "Analyzing image");
         }
     }
 }

@@ -23,11 +23,18 @@ import android.view.View;
 import android.view.Window;
 
 public class CameraActivity extends AppCompatActivity {
+    private CustomServiceObject services;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+
+        Bundle data = getIntent().getExtras();
+        if (data != null) {
+            services = data.getParcelable("services");
+        }
+
         if (null == savedInstanceState) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, Camera2BasicFragment.newInstance())
