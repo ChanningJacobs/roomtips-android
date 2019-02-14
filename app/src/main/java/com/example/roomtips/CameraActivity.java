@@ -51,7 +51,7 @@ public class CameraActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
         View mControlsView = findViewById(R.id.control);
-        mControlsView.setVisibility(View.GONE);
+        //mControlsView.setVisibility(View.GONE);
 
         //View mInfoView = findViewById(R.id.info);
         //mInfoView.setVisibility(View.GONE);

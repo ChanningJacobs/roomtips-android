@@ -12,6 +12,7 @@ import com.ibm.watson.developer_cloud.visual_recognition.v3.model.ClassifyOption
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -55,10 +56,38 @@ public class FurnitureImageClassifier extends AsyncTask<File, Void, ArrayList<St
     }
 
     @Override
-    protected void onPostExecute(ArrayList<String> results){
-        for(String classification : results){
+    protected void onPostExecute(ArrayList<String> results) {
+        for (String classification : results) {
             Log.d("classification", classification);
+            String query_product = "";
+            if (classification.contains("chair")) {
+                query_product = "chair";
+                Log.d("FOUND", "chair");
+            } else if (classification.contains("bed")) {
+                query_product = "bed";
+                Log.d("FOUND", "bed");
+            } else if (classification.contains("desk")) {
+                query_product = "desk";
+                Log.d("FOUND", "desk");
+            } else if (classification.contains("table")) {
+                query_product = "table";
+                Log.d("FOUND", "table");
+            } else if (classification.contains("lamp")) {
+                query_product = "lamp";
+                Log.d("FOUND", "lamp");
+            } else if (classification.contains("carpet")) {
+                query_product = "carpet";
+                Log.d("FOUND", "carpet");
+            }
+
+
+            FurnitureFragment.products = NativeAPIKt.getSuggestionsIkea(query_product, 10, 0, 9999,true,2);
+
         }
+
+
+
+
         //returnClassifications(results);
         return;
     }

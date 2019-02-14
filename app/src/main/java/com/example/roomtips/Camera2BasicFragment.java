@@ -41,6 +41,7 @@ import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -442,7 +443,11 @@ public class Camera2BasicFragment extends Fragment
         if(null == savedInstanceState){
             getChildFragmentManager().beginTransaction()
                     .replace(R.id.options, FurnitureFragment.newInstance(1)).commit();
+
         }
+        View prod_list = getView().findViewById(R.id.options);
+        prod_list.setVisibility(View.INVISIBLE);
+
     }
 
     @Override
@@ -787,6 +792,8 @@ public class Camera2BasicFragment extends Fragment
      */
     private void takePicture() {
         lockFocus();
+        View prod_list = getView().findViewById(R.id.options);
+        prod_list.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -801,6 +808,8 @@ public class Camera2BasicFragment extends Fragment
             mState = STATE_WAITING_LOCK;
             mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback,
                     mBackgroundHandler);
+            View prod_list = getView().findViewById(R.id.options);
+            prod_list.setVisibility(View.INVISIBLE);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -860,12 +869,15 @@ public class Camera2BasicFragment extends Fragment
                     unlockFocus();
                     FurnitureImageClassifier FurnImgClas = new FurnitureImageClassifier();
                     FurnImgClas.execute(mFile);
+
                 }
             };
 
             mCaptureSession.stopRepeating();
             mCaptureSession.abortCaptures();
             mCaptureSession.capture(captureBuilder.build(), CaptureCallback, null);
+
+
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }

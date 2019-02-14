@@ -9,10 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+S
 
-import com.example.roomtips.dummy.DummyContent;
-import com.example.roomtips.dummy.DummyContent.DummyItem;
-
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,6 +22,7 @@ import java.util.List;
  */
 public class FurnitureFragment extends Fragment {
 
+    public static ArrayList<Product> products = new ArrayList<Product>();
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
@@ -69,7 +69,7 @@ public class FurnitureFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyFurnitureRecyclerViewAdapter(DummyContent.ITEMS));//, mListener));
+            recyclerView.setAdapter(new MyFurnitureRecyclerViewAdapter(products));//, mListener));
         }
         return view;
     }
