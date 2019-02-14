@@ -16,6 +16,7 @@
 
 package com.example.roomtips;
 
+import android.graphics.Camera;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -50,8 +51,12 @@ public class CameraActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
         View mControlsView = findViewById(R.id.control);
-        //mControlsView.setVisibility(View.GONE);
-        View mInfoView = findViewById(R.id.info);
-        mInfoView.setVisibility(View.GONE);
+        mControlsView.setVisibility(View.GONE);
+
+        //View mInfoView = findViewById(R.id.info);
+        //mInfoView.setVisibility(View.GONE);
+        //View mPictureButton = findViewById(R.id.picture);
+        //mPictureButton.setVisibility(View.GONE);
+
     }
 }

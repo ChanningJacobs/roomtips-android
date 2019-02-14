@@ -26,6 +26,14 @@
         android:layout_alignParentBottom="true" />
 
     <FrameLayout
+        android:id="@+id/options"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true">
+
+    </FrameLayout>
+
+    <FrameLayout
         android:id="@+id/control"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

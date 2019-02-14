@@ -438,6 +438,11 @@ public class Camera2BasicFragment extends Fragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mFile = new File(getActivity().getFilesDir(), "test.jpg");
+        // Create child fragment list w/ 1 column
+        if(null == savedInstanceState){
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.options, FurnitureFragment.newInstance(1)).commit();
+        }
     }
 
     @Override
